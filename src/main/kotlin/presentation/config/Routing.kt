@@ -1,7 +1,9 @@
 package com.synac.presentation.config
 
 import com.synac.domain.model.QuizQuestion
+import com.synac.presentation.routes.quiz_question.deleteQuizQuestionById
 import com.synac.presentation.routes.quiz_question.getAllQuizQuestions
+import com.synac.presentation.routes.quiz_question.getQuizQuestionById
 import com.synac.presentation.routes.quiz_question.upsertQuizQuestion
 import com.synac.presentation.routes.root
 import io.ktor.server.application.*
@@ -15,6 +17,8 @@ fun Application.configureRouting() {
 
         getAllQuizQuestions()
         upsertQuizQuestion()
+        getQuizQuestionById()
+        deleteQuizQuestionById()
 
     }
 }
