@@ -1,16 +1,33 @@
 package com.synac.presentation.routes.quiz_question
 
-import com.synac.domain.model.QuizQuestion
-import com.synac.presentation.config.quizQuestions
-import io.ktor.server.routing.*
+import com.synac.domain.repository.QuizQuestionRepository
+import io.ktor.http.*
 import io.ktor.server.response.*
+import io.ktor.server.routing.*
 
-fun Route.getQuizQuestionById() {
+fun Route.getQuizQuestionById(
+    repository: QuizQuestionRepository
+) {
     get(path = "/quiz/questions/{questionId}") {
         val id = call.parameters["questionId"]
-        val question: QuizQuestion? = quizQuestions.find { it.id == id }
+        if (id.isNullOrBlank()) {
+            call.respond(
+                message = "Question Id needed",
+                status = HttpStatusCode.BadRequest
+            )
+            return@get
+        }
+        val question = repository.getQuestionById(id)
         if (question != null) {
-            call.respond(question)
+            call.respond(
+                message = question,
+                status = HttpStatusCode.OK
+            )
+        } else {
+            call.respond(
+                message = "No Quiz Question",
+                status = HttpStatusCode.NotFound
+            )
         }
     }
 }
