@@ -9,6 +9,8 @@ import com.synac.data.mapper.toQuizQuestionEntity
 import com.synac.data.util.Constant.QUESTIONS_COLLECTION_NAME
 import com.synac.domain.model.QuizQuestion
 import com.synac.domain.repository.QuizQuestionRepository
+import com.synac.domain.util.DataError
+import com.synac.domain.util.Result
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.toList
@@ -20,8 +22,10 @@ class QuizQuestionRepositoryImpl(
     private val questionCollection = mongoDatabase
         .getCollection<QuizQuestionEntity>(QUESTIONS_COLLECTION_NAME)
 
-    override suspend fun upsertQuestion(question: QuizQuestion) {
-        try {
+    override suspend fun upsertQuestion(
+        question: QuizQuestion
+    ): Result<Unit, DataError> {
+        return try {
             if (question.id == null) {
                 questionCollection.insertOne(question.toQuizQuestionEntity())
             } else {
@@ -35,35 +39,52 @@ class QuizQuestionRepositoryImpl(
                     Updates.set(QuizQuestionEntity::explanation.name, question.explanation),
                     Updates.set(QuizQuestionEntity::topicCode.name, question.topicCode)
                 )
-                questionCollection.updateOne(filterQuery, updateQuery)
+                val updateResult = questionCollection.updateOne(filterQuery, updateQuery)
+                if (updateResult.modifiedCount == 0L) {
+                    return Result.Failure(DataError.NotFound)
+                }
             }
+            Result.Success(Unit)
         } catch (e: Exception) {
             e.printStackTrace()
+            Result.Failure(DataError.Database)
         }
     }
 
     override suspend fun getAllQuestions(
         topicCode: Int?,
         limit: Int?
-    ): List<QuizQuestion> {
+    ): Result<List<QuizQuestion>, DataError> {
         return try {
             val questionLimit = limit?.takeIf { it > 0 } ?: 10
             val filterQuery = topicCode?.let {
                 Filters.eq(QuizQuestionEntity::topicCode.name, it)
             } ?: Filters.empty()
 
-            questionCollection
+            val questions = questionCollection
                 .find(filter = filterQuery)
                 .limit(questionLimit)
                 .map { it.toQuizQuestion() }
                 .toList()
+
+            if (questions.isNotEmpty()) {
+                Result.Success(questions)
+            } else {
+                Result.Failure(DataError.NotFound)
+            }
+
         } catch (e: Exception) {
             e.printStackTrace()
-            emptyList()
+            Result.Failure(DataError.Database)
         }
     }
 
-    override suspend fun getQuestionById(id: String): QuizQuestion? {
+    override suspend fun getQuestionById(
+        id: String?
+    ): Result<QuizQuestion, DataError> {
+        if (id.isNullOrBlank()) {
+            return Result.Failure(DataError.Validation)
+        }
         return try {
             val filterQuery = Filters.eq(
                 QuizQuestionEntity::_id.name, id
@@ -71,24 +92,39 @@ class QuizQuestionRepositoryImpl(
             val questionEntity = questionCollection
                 .find(filter = filterQuery)
                 .firstOrNull()
-            questionEntity?.toQuizQuestion()
+
+            if (questionEntity != null) {
+                val question = questionEntity.toQuizQuestion()
+                Result.Success(question)
+            } else {
+                Result.Failure(DataError.NotFound)
+            }
         } catch (e: Exception) {
             e.printStackTrace()
-            null
+            Result.Failure(DataError.Database)
         }
     }
 
-    override suspend fun deleteQuestionById(id: String): Boolean {
+    override suspend fun deleteQuestionById(
+        id: String?
+    ): Result<Unit, DataError> {
+        if (id.isNullOrBlank()) {
+            return Result.Failure(DataError.Validation)
+        }
         return try {
             val filterQuery = Filters.eq(
                 QuizQuestionEntity::_id.name, id
             )
             val deleteResult = questionCollection
                 .deleteOne(filter = filterQuery)
-            deleteResult.deletedCount > 0
+            if (deleteResult.deletedCount > 0) {
+                Result.Success(Unit)
+            } else {
+                Result.Failure(DataError.NotFound)
+            }
         } catch (e: Exception) {
             e.printStackTrace()
-            false
+            Result.Failure(DataError.Database)
         }
     }
 }
