@@ -1,22 +1,22 @@
-package com.synac.presentation.routes.quiz_topic
+package com.synac.presentation.routes.issue_report
 
-import com.synac.domain.repository.QuizTopicRepository
+import com.synac.domain.repository.IssueReportRepository
 import com.synac.domain.util.onFailure
 import com.synac.domain.util.onSuccess
 import com.synac.presentation.util.respondWithError
 import io.ktor.http.*
 import io.ktor.server.resources.*
 import io.ktor.server.response.*
-import io.ktor.server.routing.Route
+import io.ktor.server.routing.*
 
-fun Route.getQuizTopicById(
-    repository: QuizTopicRepository
+fun Route.getAllIssueReports(
+    repository: IssueReportRepository
 ) {
-    get<QuizTopicRoutesPath.ById> { path ->
-        repository.getTopicById(path.topicId)
-            .onSuccess { quizTopic ->
+    get<IssueReportRoutesPath> {
+        repository.getAllIssueReports()
+            .onSuccess { reports ->
                 call.respond(
-                    message = quizTopic,
+                    message = reports,
                     status = HttpStatusCode.OK
                 )
             }

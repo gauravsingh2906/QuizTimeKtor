@@ -1,10 +1,15 @@
 package com.synac.presentation.config
 
 import com.synac.data.database.DatabaseFactory
+import com.synac.data.repository.IssueReportRepositoryImpl
 import com.synac.data.repository.QuizQuestionRepositoryImpl
 import com.synac.data.repository.QuizTopicRepositoryImpl
+import com.synac.domain.repository.IssueReportRepository
 import com.synac.domain.repository.QuizQuestionRepository
 import com.synac.domain.repository.QuizTopicRepository
+import com.synac.presentation.routes.issue_report.deleteIssueReportById
+import com.synac.presentation.routes.issue_report.getAllIssueReports
+import com.synac.presentation.routes.issue_report.insertIssueReport
 import com.synac.presentation.routes.quiz_question.deleteQuizQuestionById
 import com.synac.presentation.routes.quiz_question.getAllQuizQuestions
 import com.synac.presentation.routes.quiz_question.getQuizQuestionById
@@ -26,6 +31,7 @@ fun Application.configureRouting() {
     val mongoDatabase = DatabaseFactory.create()
     val quizQuestionRepository: QuizQuestionRepository = QuizQuestionRepositoryImpl(mongoDatabase)
     val quizTopicRepository: QuizTopicRepository = QuizTopicRepositoryImpl(mongoDatabase)
+    val issueReportRepository: IssueReportRepository = IssueReportRepositoryImpl(mongoDatabase)
 
     routing {
 
@@ -42,6 +48,11 @@ fun Application.configureRouting() {
         upsertQuizTopic(quizTopicRepository)
         getQuizTopicById(quizTopicRepository)
         deleteQuizTopicById(quizTopicRepository)
+
+        //Issue Report
+        getAllIssueReports(issueReportRepository)
+        insertIssueReport(issueReportRepository)
+        deleteIssueReportById(issueReportRepository)
 
         staticResources(
             remotePath = "/images",

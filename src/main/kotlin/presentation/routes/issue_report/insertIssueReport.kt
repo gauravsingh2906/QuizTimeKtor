@@ -1,25 +1,25 @@
-package com.synac.presentation.routes.quiz_topic
+package com.synac.presentation.routes.issue_report
 
-import com.synac.domain.model.QuizTopic
-import com.synac.domain.repository.QuizTopicRepository
+import com.synac.domain.model.IssueReport
+import com.synac.domain.repository.IssueReportRepository
 import com.synac.domain.util.onFailure
 import com.synac.domain.util.onSuccess
 import com.synac.presentation.util.respondWithError
 import io.ktor.http.*
 import io.ktor.server.request.*
+import io.ktor.server.routing.Route
 import io.ktor.server.resources.*
 import io.ktor.server.response.*
-import io.ktor.server.routing.Route
 
-fun Route.upsertQuizTopic(
-    repository: QuizTopicRepository
+fun Route.insertIssueReport(
+    repository: IssueReportRepository
 ) {
-    post<QuizTopicRoutesPath> {
-        val quizTopic = call.receive<QuizTopic>()
-        repository.upsertTopic(quizTopic)
+    post<IssueReportRoutesPath> {
+        val report = call.receive<IssueReport>()
+        repository.insertIssueReport(report)
             .onSuccess {
                 call.respond(
-                    message = "Quiz Topic added",
+                    message = "Report submitted successfully",
                     status = HttpStatusCode.Created
                 )
             }
