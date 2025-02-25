@@ -1,8 +1,6 @@
 package com.synac
 
-import com.synac.presentation.config.configureLogging
-import com.synac.presentation.config.configureRouting
-import com.synac.presentation.config.configureSerialization
+import com.synac.presentation.config.*
 import io.ktor.server.application.*
 
 fun main(args: Array<String>) {
@@ -14,4 +12,6 @@ fun Application.module() {
     configureLogging()
     configureSerialization()
     configureRouting()
+    configureValidation()
+    configureStatusPages()
 }
