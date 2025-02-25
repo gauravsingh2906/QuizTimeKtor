@@ -6,14 +6,14 @@ import com.synac.domain.util.onSuccess
 import com.synac.presentation.util.respondWithError
 import io.ktor.http.*
 import io.ktor.server.response.*
-import io.ktor.server.routing.*
+import io.ktor.server.resources.*
+import io.ktor.server.routing.Route
 
 fun Route.getQuizQuestionById(
     repository: QuizQuestionRepository
 ) {
-    get(path = "/quiz/questions/{questionId}") {
-        val id = call.parameters["questionId"]
-        repository.getQuestionById(id)
+    get<QuizQuestionRoutesPath.ById> { path ->
+        repository.getQuestionById(path.questionId)
             .onSuccess { question ->
                 call.respond(
                     message = question,

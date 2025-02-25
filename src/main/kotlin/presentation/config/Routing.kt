@@ -9,9 +9,12 @@ import com.synac.presentation.routes.quiz_question.getQuizQuestionById
 import com.synac.presentation.routes.quiz_question.upsertQuizQuestion
 import com.synac.presentation.routes.root
 import io.ktor.server.application.*
+import io.ktor.server.resources.*
 import io.ktor.server.routing.*
 
 fun Application.configureRouting() {
+
+    install(Resources)
 
     val mongoDatabase = DatabaseFactory.create()
     val quizQuestionRepository: QuizQuestionRepository = QuizQuestionRepositoryImpl(mongoDatabase)

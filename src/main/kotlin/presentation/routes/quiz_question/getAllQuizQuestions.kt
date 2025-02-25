@@ -5,16 +5,15 @@ import com.synac.domain.util.onFailure
 import com.synac.domain.util.onSuccess
 import com.synac.presentation.util.respondWithError
 import io.ktor.http.*
+import io.ktor.server.resources.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
 fun Route.getAllQuizQuestions(
     repository: QuizQuestionRepository
 ) {
-    get(path = "/quiz/questions") {
-        val topicCode = call.queryParameters["topicCode"]?.toIntOrNull()
-        val limit = call.queryParameters["limit"]?.toIntOrNull()
-        repository.getAllQuestions(topicCode, limit)
+    get<QuizQuestionRoutesPath> { path ->
+        repository.getAllQuestions(path.topicCode, path.limit)
             .onSuccess { questions ->
                 call.respond(
                     message = questions,
