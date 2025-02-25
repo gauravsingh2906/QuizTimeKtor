@@ -1,9 +1,5 @@
 package com.synac.presentation.config
 
-import com.synac.data.database.DatabaseFactory
-import com.synac.data.repository.IssueReportRepositoryImpl
-import com.synac.data.repository.QuizQuestionRepositoryImpl
-import com.synac.data.repository.QuizTopicRepositoryImpl
 import com.synac.domain.repository.IssueReportRepository
 import com.synac.domain.repository.QuizQuestionRepository
 import com.synac.domain.repository.QuizTopicRepository
@@ -23,15 +19,15 @@ import io.ktor.server.application.*
 import io.ktor.server.http.content.*
 import io.ktor.server.resources.*
 import io.ktor.server.routing.*
+import org.koin.ktor.ext.inject
 
 fun Application.configureRouting() {
 
     install(Resources)
 
-    val mongoDatabase = DatabaseFactory.create()
-    val quizQuestionRepository: QuizQuestionRepository = QuizQuestionRepositoryImpl(mongoDatabase)
-    val quizTopicRepository: QuizTopicRepository = QuizTopicRepositoryImpl(mongoDatabase)
-    val issueReportRepository: IssueReportRepository = IssueReportRepositoryImpl(mongoDatabase)
+    val quizQuestionRepository: QuizQuestionRepository by inject()
+    val quizTopicRepository: QuizTopicRepository by inject()
+    val issueReportRepository: IssueReportRepository by inject()
 
     routing {
 

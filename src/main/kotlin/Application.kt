@@ -9,6 +9,7 @@ fun main(args: Array<String>) {
 
 @Suppress("unused")
 fun Application.module() {
+    configureKoin()
     configureLogging()
     configureSerialization()
     configureRouting()
