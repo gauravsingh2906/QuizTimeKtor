@@ -11,13 +11,13 @@ suspend fun RoutingContext.respondWithError(
     when(error) {
         DataError.Database -> {
             call.respond(
-                message = "An unknown error occurred",
+                message = "Database error occurred",
                 status = HttpStatusCode.InternalServerError
             )
         }
         DataError.NotFound -> {
             call.respond(
-                message = "No Quiz Questions",
+                message = "Resource not Found",
                 status = HttpStatusCode.NotFound
             )
         }
