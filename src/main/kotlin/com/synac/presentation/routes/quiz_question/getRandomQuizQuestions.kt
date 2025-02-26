@@ -9,11 +9,11 @@ import io.ktor.server.resources.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
-fun Route.getAllQuizQuestions(
+fun Route.getRandomQuizQuestions(
     repository: QuizQuestionRepository
 ) {
-    get<QuizQuestionRoutesPath> { path ->
-        repository.getAllQuestions(path.topicCode)
+    get<QuizQuestionRoutesPath.Random> { path ->
+        repository.getRandomQuestions(path.topicCode, path.limit)
             .onSuccess { questions ->
                 call.respond(
                     message = questions,

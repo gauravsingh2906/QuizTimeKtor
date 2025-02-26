@@ -6,10 +6,7 @@ import com.synac.domain.repository.QuizTopicRepository
 import com.synac.presentation.routes.issue_report.deleteIssueReportById
 import com.synac.presentation.routes.issue_report.getAllIssueReports
 import com.synac.presentation.routes.issue_report.insertIssueReport
-import com.synac.presentation.routes.quiz_question.deleteQuizQuestionById
-import com.synac.presentation.routes.quiz_question.getAllQuizQuestions
-import com.synac.presentation.routes.quiz_question.getQuizQuestionById
-import com.synac.presentation.routes.quiz_question.upsertQuizQuestion
+import com.synac.presentation.routes.quiz_question.*
 import com.synac.presentation.routes.quiz_topic.deleteQuizTopicById
 import com.synac.presentation.routes.quiz_topic.getAllQuizTopics
 import com.synac.presentation.routes.quiz_topic.getQuizTopicById
@@ -36,7 +33,9 @@ fun Application.configureRouting() {
         //Quiz Question
         getAllQuizQuestions(quizQuestionRepository)
         upsertQuizQuestion(quizQuestionRepository)
+        insertQuizQuestionsInBulk(quizQuestionRepository)
         getQuizQuestionById(quizQuestionRepository)
+        getRandomQuizQuestions(quizQuestionRepository)
         deleteQuizQuestionById(quizQuestionRepository)
 
         //Quiz Topic
