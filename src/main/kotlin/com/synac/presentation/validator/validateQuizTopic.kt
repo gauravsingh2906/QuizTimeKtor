@@ -1,29 +1,31 @@
 package com.synac.presentation.validator
 
-import com.synac.domain.model.QuizTopic
+import com.synac.domain.model.QuizTopics
 import io.ktor.server.plugins.requestvalidation.*
 
 fun RequestValidationConfig.validateQuizTopic() {
-    validate<QuizTopic> { quizTopic ->
+    validate<QuizTopics>{quizTopics ->
         when {
-            quizTopic.name.isBlank() || quizTopic.name.length < 3 -> {
+            quizTopics.name.isBlank() || quizTopics.name.length <3 -> {
                 ValidationResult.Invalid(
-                    reason = "Topic name must be at least 3 characters long and not empty"
+                    reason = "Topic must not be empty and it needs to be 3 characters long"
                 )
             }
-            quizTopic.imageUrl.isBlank() -> {
+            quizTopics.imageUrl.isBlank() -> {
                 ValidationResult.Invalid(
-                    reason = "Image url must not be empty"
+                    reason = "Image Url must not be empty"
                 )
             }
-            quizTopic.code < 0 -> {
+
+            quizTopics.code < 0 -> {
                 ValidationResult.Invalid(
-                    reason = "Topic code must be a whole number"
+                    reason = "Topic Code must be a whole number"
                 )
             }
             else -> {
                 ValidationResult.Valid
             }
+
         }
     }
 }

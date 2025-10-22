@@ -1,9 +1,9 @@
 package com.synac.presentation.routes.quiz_topic
 
-import com.synac.domain.model.QuizTopic
+import com.synac.domain.model.QuizTopics
 import com.synac.domain.repository.QuizTopicRepository
-import com.synac.domain.util.onFailure
-import com.synac.domain.util.onSuccess
+import com.synac.domain.utils.onFailure
+import com.synac.domain.utils.onSuccess
 import com.synac.presentation.util.respondWithError
 import io.ktor.http.*
 import io.ktor.server.request.*
@@ -11,20 +11,21 @@ import io.ktor.server.resources.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.Route
 
+
 fun Route.upsertQuizTopic(
-    repository: QuizTopicRepository
+    topicRepository: QuizTopicRepository
 ) {
     post<QuizTopicRoutesPath> {
-        val quizTopic = call.receive<QuizTopic>()
-        repository.upsertTopic(quizTopic)
+        val quizTopic = call.receive<QuizTopics>()
+        topicRepository.upsertTopic(quizTopic)
             .onSuccess {
                 call.respond(
                     message = "Quiz Topic added",
-                    status = HttpStatusCode.Created
+                    status =HttpStatusCode.Created
                 )
             }
-            .onFailure { error ->
-                respondWithError(error)
+            .onFailure {
+                respondWithError(it)
             }
     }
 }

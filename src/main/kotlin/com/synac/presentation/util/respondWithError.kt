@@ -1,23 +1,23 @@
 package com.synac.presentation.util
 
-import com.synac.domain.util.DataError
+import com.synac.domain.utils.DataError
 import io.ktor.http.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
 suspend fun RoutingContext.respondWithError(
-    error: DataError
+    error:DataError
 ) {
     when(error) {
         DataError.Database -> {
             call.respond(
-                message = "Database error occurred",
+                message = " Database Error occurred",
                 status = HttpStatusCode.InternalServerError
             )
         }
         DataError.NotFound -> {
             call.respond(
-                message = "Resource not Found",
+                message = "Resources not found",
                 status = HttpStatusCode.NotFound
             )
         }

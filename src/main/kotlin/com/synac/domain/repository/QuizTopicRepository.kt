@@ -1,14 +1,17 @@
 package com.synac.domain.repository
 
-import com.synac.domain.model.QuizTopic
-import com.synac.domain.util.DataError
-import com.synac.domain.util.Result
+import com.synac.domain.model.QuizTopics
+import com.synac.domain.utils.DataError
+import com.synac.domain.utils.Result
 
 interface QuizTopicRepository {
 
-    suspend fun getAllTopics(): Result<List<QuizTopic>, DataError>
-    suspend fun upsertTopic(topic: QuizTopic): Result<Unit, DataError>
-    suspend fun getTopicById(id: String?): Result<QuizTopic, DataError>
-    suspend fun deleteTopicById(id: String?): Result<Unit, DataError>
+    suspend fun getAllTopics():Result<List<QuizTopics>,DataError>
+
+    suspend fun upsertTopic(topic:QuizTopics):Result<Unit,DataError>
+
+    suspend fun getTopicById(id:String?):Result<QuizTopics,DataError>
+
+    suspend fun deleteTopicById(id: String?):Result<Unit,DataError>
 
 }

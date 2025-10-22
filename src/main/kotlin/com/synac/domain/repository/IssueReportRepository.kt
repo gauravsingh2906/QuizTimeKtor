@@ -1,11 +1,16 @@
 package com.synac.domain.repository
 
-import com.synac.domain.model.IssueReport
-import com.synac.domain.util.DataError
-import com.synac.domain.util.Result
+import com.synac.domain.model.IssueReports
+import com.synac.domain.utils.DataError
+import com.synac.domain.utils.Result
 
 interface IssueReportRepository {
-    suspend fun getAllIssueReports(): Result<List<IssueReport>, DataError>
-    suspend fun insertIssueReport(report: IssueReport): Result<Unit, DataError>
-    suspend fun deleteIssueReportById(id: String?): Result<Unit, DataError>
+
+    suspend fun getAllIssueReports():Result<List<IssueReports>,DataError>
+
+    suspend fun insertIssueReport(report: IssueReports):Result<Unit,DataError>
+
+    suspend fun deleteIssueReportById(id:String?):Result<Unit,DataError>
+
+
 }

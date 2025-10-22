@@ -8,10 +8,10 @@ import io.ktor.server.response.*
 
 fun Application.configureStatusPages() {
     install(StatusPages) {
-        exception<RequestValidationException> { call, cause ->
+        exception<RequestValidationException> {call, cause ->
             call.respond(
                 message = cause.reasons.joinToString(),
-                status = HttpStatusCode.BadRequest
+                status= HttpStatusCode.BadRequest
             )
         }
     }

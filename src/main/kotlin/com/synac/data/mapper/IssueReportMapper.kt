@@ -1,21 +1,21 @@
 package com.synac.data.mapper
 
 import com.synac.data.database.entity.IssueReportEntity
-import com.synac.domain.model.IssueReport
+import com.synac.domain.model.IssueReports
 
-fun IssueReportEntity.toIssueReport() = IssueReport(
-    id = _id,
-    questionId = questionId,
+fun IssueReportEntity.toIssueReport() = IssueReports(
+    id=_id,
+    questionId=questionId,
     issueType = issueType,
     additionalComment = additionalComment,
-    userEmail = userEmail,
-    timestamp = timestamp
+    userEmail=userEmail,
+    timestamp=timestamp
 )
 
-fun IssueReport.toIssueReportEntity() = IssueReportEntity(
-    questionId = questionId,
+fun IssueReports.toIssueReportEntity() = IssueReportEntity(
+    questionId=questionId,
     issueType = issueType,
     additionalComment = additionalComment,
-    userEmail = userEmail,
-    timestamp = timestamp
+    userEmail=userEmail,
+    timestamp=timestamp
 )

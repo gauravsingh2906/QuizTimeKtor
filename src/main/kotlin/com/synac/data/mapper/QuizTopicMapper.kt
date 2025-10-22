@@ -1,17 +1,18 @@
 package com.synac.data.mapper
 
 import com.synac.data.database.entity.QuizTopicEntity
-import com.synac.domain.model.QuizTopic
+import com.synac.domain.model.QuizTopics
 
-fun QuizTopicEntity.toQuizTopic() = QuizTopic(
-    id = _id,
+fun QuizTopicEntity.toQuizTopic() = QuizTopics(
+    id=_id,
     name = name,
-    imageUrl = imageUrl,
-    code = code
+    imageUrl=imageUrl,
+    code=code
 )
 
-fun QuizTopic.toQuizTopicEntity() = QuizTopicEntity(
+
+fun QuizTopics.toQuizTopicEntity() = QuizTopicEntity(
     name = name,
-    imageUrl = imageUrl,
-    code = code
+    imageUrl=imageUrl,
+    code=code
 )

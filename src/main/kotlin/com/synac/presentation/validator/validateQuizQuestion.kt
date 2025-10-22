@@ -1,44 +1,40 @@
 package com.synac.presentation.validator
 
-import com.synac.domain.model.QuizQuestion
+import com.synac.domain.model.QuizQuestions
 import io.ktor.server.plugins.requestvalidation.*
 
 fun RequestValidationConfig.validateQuizQuestion() {
-    validate<QuizQuestion> { quizQuestion ->
+    validate<QuizQuestions>{ quizQuestions ->
         when {
-            quizQuestion.question.isBlank() || quizQuestion.question.length < 5 -> {
+            quizQuestions.question.isBlank() || quizQuestions.question.length <5 -> {
                 ValidationResult.Invalid(
-                    reason = "Question must be at least 5 characters long and not empty"
+                    reason = "Question must not be empty and 5 characters long"
                 )
             }
-            quizQuestion.correctAnswer.isBlank() -> {
+            quizQuestions.correctAnswer.isBlank() -> {
                 ValidationResult.Invalid(
-                    reason = "Correct answer must not be empty"
+                    reason = "Correct Answer must not be empty"
                 )
             }
-            quizQuestion.incorrectAnswers.isEmpty() -> {
+            quizQuestions.incorrectAnswer.isEmpty() -> {
                 ValidationResult.Invalid(
-                    reason = "There must be at least one incorrect answer"
+                    reason = "There must be at least one incorrect answer "
                 )
             }
-            quizQuestion.incorrectAnswers.any { it.isBlank() } -> {
-                ValidationResult.Invalid(
-                    reason = "Incorrect answers must not be empty"
-                )
-            }
-            quizQuestion.explanation.isBlank() -> {
+            quizQuestions.explanation.isBlank() -> {
                 ValidationResult.Invalid(
                     reason = "Explanation must not be empty"
                 )
             }
-            quizQuestion.topicCode <= 0 -> {
+            quizQuestions.topicCode <=0 -> {
                 ValidationResult.Invalid(
-                    reason = "Topic code must be a positive integer"
+                    reason = "Topic Code must not be a positive integer"
                 )
             }
             else -> {
                 ValidationResult.Valid
             }
+
         }
     }
 }

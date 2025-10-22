@@ -7,8 +7,9 @@ class QuizTopicRoutesPath {
 
     @Resource(path = "{topicId}")
     data class ById(
-        val parent: QuizTopicRoutesPath = QuizTopicRoutesPath(),
-        val topicId: String
+        val parent:QuizTopicRoutesPath = QuizTopicRoutesPath(),
+        val topicId:String
     )
+
 
 }

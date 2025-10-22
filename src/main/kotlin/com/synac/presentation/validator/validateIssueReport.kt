@@ -1,47 +1,44 @@
 package com.synac.presentation.validator
 
-import com.synac.domain.model.IssueReport
+import com.synac.domain.model.IssueReports
 import io.ktor.server.plugins.requestvalidation.*
 
 fun RequestValidationConfig.validateIssueReport() {
+    validate<IssueReports>{ issueReport ->
 
-    val emailRegex = Regex(pattern = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}\$")
+        val emailRegex = Regex(pattern = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}\$")
 
-    validate<IssueReport> { issueReport ->
+
         when {
-            issueReport.questionId.isBlank() -> {
+            issueReport.questionId.isBlank()  -> {
                 ValidationResult.Invalid(
-                    reason = "Question ID must not be empty"
+                    reason = "Question Id must not be empty"
                 )
             }
-
             issueReport.issueType.isBlank() -> {
                 ValidationResult.Invalid(
-                    reason = "Issue type must not be empty"
+                    reason = "Issue Type must not be empty"
                 )
             }
-
             issueReport.timestamp.isBlank() -> {
                 ValidationResult.Invalid(
                     reason = "Timestamp must not be empty"
                 )
             }
-
-            issueReport.additionalComment != null && issueReport.additionalComment.length < 5 -> {
+            issueReport.additionalComment !=null && issueReport.additionalComment.length<5 -> {
                 ValidationResult.Invalid(
                     reason = "Additional Comment must be at least 5 characters long."
                 )
             }
-
-            issueReport.userEmail != null && !issueReport.userEmail.matches(emailRegex) -> {
+            issueReport.userEmail !=null && !issueReport.userEmail.matches(emailRegex) -> {
                 ValidationResult.Invalid(
-                    reason = "Invalid email format"
+                    reason = "Invalid Email Format"
                 )
             }
-
             else -> {
                 ValidationResult.Valid
             }
+
         }
     }
 }

@@ -1,9 +1,10 @@
-package com.synac.presentation.routes.issue_report
+package com.synac.presentation.routes.issue_reports
 
-import com.synac.domain.model.IssueReport
+import IssueReportsRoutesPath
+import com.synac.domain.model.IssueReports
 import com.synac.domain.repository.IssueReportRepository
-import com.synac.domain.util.onFailure
-import com.synac.domain.util.onSuccess
+import com.synac.domain.utils.onFailure
+import com.synac.domain.utils.onSuccess
 import com.synac.presentation.util.respondWithError
 import io.ktor.http.*
 import io.ktor.server.request.*
@@ -14,17 +15,21 @@ import io.ktor.server.response.*
 fun Route.insertIssueReport(
     repository: IssueReportRepository
 ) {
-    post<IssueReportRoutesPath> {
-        val report = call.receive<IssueReport>()
+
+    post<IssueReportsRoutesPath> {
+
+        val report = call.receive<IssueReports>()
         repository.insertIssueReport(report)
             .onSuccess {
                 call.respond(
-                    message = "Report submitted successfully",
-                    status = HttpStatusCode.Created
+                    message = "Report Submitted Successfully",
+                    status=HttpStatusCode.Created
                 )
             }
-            .onFailure { error ->
-                respondWithError(error)
+            .onFailure {
+                respondWithError(it)
             }
+
     }
+
 }

@@ -1,24 +1,23 @@
 package com.synac.presentation.routes.quiz_topic
 
 import com.synac.domain.repository.QuizTopicRepository
-import com.synac.domain.util.onFailure
-import com.synac.domain.util.onSuccess
+import com.synac.domain.utils.onFailure
+import com.synac.domain.utils.onSuccess
 import com.synac.presentation.util.respondWithError
 import io.ktor.http.*
 import io.ktor.server.resources.*
-import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import io.ktor.server.response.*
 
 fun Route.deleteQuizTopicById(
-    repository: QuizTopicRepository
+    topicRepository: QuizTopicRepository
 ) {
-    delete<QuizTopicRoutesPath.ById> { path ->
-        repository.deleteTopicById(path.topicId)
+    delete<QuizTopicRoutesPath.ById> {path->
+        topicRepository.deleteTopicById(path.topicId)
             .onSuccess {
-                call.respond(HttpStatusCode.NoContent)
-            }
-            .onFailure { error ->
-                respondWithError(error)
+               call.respond(HttpStatusCode.NoContent)
+            }.onFailure {
+                respondWithError(it)
             }
     }
 }
