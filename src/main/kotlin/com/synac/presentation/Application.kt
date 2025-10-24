@@ -20,7 +20,7 @@ fun main(args: Array<String>) {
     }.start(wait = true)
 
 
-    io.ktor.server.netty.EngineMain.main(args)
+  //  io.ktor.server.netty.EngineMain.main(args)
 }
 
 @Suppress("unused")
