@@ -38,3 +38,26 @@ dependencies {
 
     implementation(libs.mongodb.driver.kotlin)
 }
+
+tasks.register<Jar>("fatJar") {
+    group = "build"
+    description = "Builds a fat JAR with all dependencies"
+
+    manifest {
+        attributes["Main-Class"] = "io.ktor.server.netty.EngineMain" // your main class
+    }
+
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
+    from(sourceSets.main.get().output)
+
+    // include runtime dependencies
+    dependsOn(configurations.runtimeClasspath)
+    from({
+        configurations.runtimeClasspath.get()
+            .filter { it.name.endsWith("jar") }
+            .map { zipTree(it) }
+    })
+}
+
+
